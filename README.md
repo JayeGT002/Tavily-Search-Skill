@@ -204,3 +204,9 @@ SOFTWARE.
 - **[Tavily](https://tavily.com/)** - 提供强大的搜索 API
 - **[OpenClaw](https://github.com/openclaw/openclaw)** - 提供 Agent 框架
 - **[Kimi2.5](https://kimi.moonshot.cn/)** - 提供 AI 模型支持
+- **[MiniMax](https://minimaxi.com)** - readme.md生成
+- **[Siliconflow](https://siliconflow.cn)** - API提供商
+
+## 🥲 求放过
+
+本项目由AI生成，如有问题请务必指出，但别打我QWQ
