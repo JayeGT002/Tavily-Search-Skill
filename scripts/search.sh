@@ -8,7 +8,7 @@
 #   ./search.sh --toggle-paid-mode         # 切换付费模式开关
 #   ./search.sh --status                   # 查看当前状态
 
-TAVILY_API_KEY="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"
+TAVILY_API_KEY="请修改此处。"
 TAVILY_ENDPOINT="https://api.tavily.com/search"
 TAVILY_USAGE_ENDPOINT="https://api.tavily.com/usage"
 
