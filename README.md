@@ -3,6 +3,7 @@
 🚀 高质量网络搜索工具，支持实时额度管理和付费模式控制。
 
 [ ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ](LICENSE)
+
 [English](./README-en.md) | [中文](./README.md)
 
 ---
