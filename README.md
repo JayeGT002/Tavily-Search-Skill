@@ -3,6 +3,9 @@
 🚀 高质量网络搜索工具，支持实时额度管理和付费模式控制。
 
 [ ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ](LICENSE)
+[English](./README-en.md) | [中文](./README.md)
+
+---
 
 ## ✨ 特性
 
@@ -13,44 +16,59 @@
 - **零额度禁用** - 付费额度为0时自动禁用（可配置）
 - **完整错误处理** - 网络失败、额度不足、API Key 无效等情况均有处理
 
+---
+
 ## 📖 使用方法
+
+### 前置配置 ⚠️
+
+**必须设置环境变量（需要用户自行配置）：**
+```bash
+export TAVILY_API_KEY="你的API Key"
+```
+
+获取 API Key: https://app.tavily.com/api-keys
+
+> ⚠️ 注意：此 skill 需要用户提供自己的 Tavily API Key，不附带默认 key。
 
 ### 基本搜索
 
 ```bash
-./skills/tavily/scripts/search.sh "搜索关键词"
+./search.sh "搜索关键词"
 ```
 
 ### 指定结果数量
 
 ```bash
 # 默认返回5条结果
-./skills/tavily/scripts/search.sh "关键词" 10
+./search.sh "关键词" 10
 ```
 
 ### 包含图片
 
 ```bash
-./skills/tavily/scripts/search.sh "关键词" 5 true
+./search.sh "关键词" 5 true
 ```
 
 ### 额度查询
 
 ```bash
-./skills/tavily/scripts/search.sh --usage
+./search.sh --usage
 ```
 
 ### 付费模式切换
 
 ```bash
-./skills/tavily/scripts/search.sh --toggle-paid-mode
+./search.sh --toggle-paid-mode
 ```
 
 ### 查看当前状态
 
 ```bash
-./skills/tavily/scripts/search.sh --status
+./search.sh --status
 ```
+
+---
 
 ## 💳 额度计算逻辑
 
@@ -86,6 +104,8 @@
 | `free_quota_limit` | Number | 免费额度上限，默认 1000 |
 | `disable_when_paid_quota_zero` | Boolean | 付费额度为0时是否禁用搜索 |
 
+---
+
 ## ⚠️ 错误处理
 
 | 错误类型 | 处理方式 |
@@ -113,6 +133,8 @@
   "status": "failed"
 }
 ```
+
+---
 
 ## 📦 输出格式
 
@@ -152,6 +174,8 @@
 | `quota_info` | Object | 额度信息 |
 | `response_time` | String | 响应时间 |
 
+---
+
 ## 🔧 依赖说明
 
 | 依赖 | 版本 | 说明 |
@@ -171,42 +195,16 @@ sudo apt-get install curl jq
 brew install curl jq
 ```
 
+---
+
 ## 📄 许可
 
-本项目采用 **MIT 许可**。
+本项目采用 **MIT 许可** - See [LICENSE](./LICENSE)。
 
-```
-MIT License
+---
 
-Copyright (c) 2026 龙眠
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 🎉 特别感谢
+## 🙏 特别感谢
 
 - **[Tavily](https://tavily.com/)** - 提供强大的搜索 API
 - **[OpenClaw](https://github.com/openclaw/openclaw)** - 提供 Agent 框架
-- **[Kimi2.5](https://kimi.moonshot.cn/)** - 提供 AI 模型支持
-- **[MiniMax](https://minimaxi.com)** - readme.md生成
 - **[Siliconflow](https://siliconflow.cn)** - API提供商
-
-## 🥲 求放过
-
-本项目由AI生成，如有问题请务必指出，但别打我QWQ
