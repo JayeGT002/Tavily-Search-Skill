@@ -32,6 +32,8 @@ export TAVILY_API_KEY="你的API Key"
 
 > ⚠️ 注意：此 skill 需要用户提供自己的 Tavily API Key，不附带默认 key。
 
+项目已发布至https://clawhub.ai/JayeGT002/tavily-search-skill
+
 ### 基本搜索
 
 ```bash
