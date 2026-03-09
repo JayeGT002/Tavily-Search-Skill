@@ -92,6 +92,18 @@ export TAVILY_API_KEY="你的API Key"
 - `curl` - HTTP 请求
 - `jq` - JSON 处理
 
+### 安装依赖
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install curl jq
+```
+
+**macOS:**
+```bash
+brew install curl jq
+```
+
 ## 限制
 
 - 免费版每月 1000 次请求
