@@ -1,7 +1,7 @@
 ---
 name: tavily-search-skill
 description: Tavily API integration with real-time quota management and paid mode toggle. Use when web search is needed.
-version: 1.0.3
+version: 1.0.4
 author: JayeGT002
 triggers:
   - tavily
