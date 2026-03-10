@@ -1,1 +1,6 @@
-{"owner":"JayeGT002","slug":"tavily-search-skill","displayName":"Tavily Search Skill","latest":{"version":"1.0.0","publishedAt":1773084000000,"commit":""},"requiredEnvVars":["TAVILY_API_KEY"],"dependencies":["curl","jq"],"history":[]}
+{
+  "ownerId": "kn78ns1svg36jybcqfkxhtvcp182kf18",
+  "slug": "tavily-search-skill",
+  "version": "1.0.3",
+  "publishedAt": 1773085282117
+}

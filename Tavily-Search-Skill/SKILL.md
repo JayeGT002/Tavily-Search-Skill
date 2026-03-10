@@ -1,81 +1,87 @@
 ---
-name: Tavily-Search-Skill
-description: 调用 Tavily API 进行高质量搜索，支持实时额度管理和付费模式控制。用于需要网络搜索时。
+name: tavily-search-skill
+description: Tavily API integration with real-time quota management and paid mode toggle. Use when web search is needed.
+version: 1.0.3
+author: JayeGT002
+triggers:
+  - tavily
+  - search
+  - web search
 ---
 
 # Tavily Search Skill 🔍
 
-调用 Tavily API 进行高质量网络搜索的 OpenClaw Skill。
+OpenClaw Skill for performing high-quality web searches using the Tavily API.
 
-## 功能特性
+## Features
 
-- **智能搜索** - 调用 Tavily API，返回结构化搜索结果
-- **实时额度管理** - 每次搜索后自动更新额度
-- **免费/付费额度区分** - 分别显示免费额度和付费额度
-- **付费模式开关** - 可切换是否优先使用付费额度
-- **完整错误处理** - 网络失败、额度不足等情况均有处理
+- **Smart Search** - Call Tavily API with structured results
+- **Real-time Quota Management** - Auto-update quota after each search
+- **Free/Paid Quota Distinction** - Display free and paid quotas separately
+- **Paid Mode Toggle** - Switch between free and paid quota priority
+- **Comprehensive Error Handling** - Network failures, insufficient quota, etc.
 
-## 使用方法
+## Usage
 
-### 前置配置 ⚠️
+### Prerequisites ⚠️
 
-**必须设置环境变量（需要用户自行配置）：**
+**Environment variable required (user must configure):**
 ```bash
-export TAVILY_API_KEY="你的API Key"
+export TAVILY_API_KEY="your_api_key"
 ```
 
-获取 API Key: https://app.tavily.com/api-keys
+Get API Key: https://app.tavily.com/api-keys
 
-> ⚠️ 注意：此 skill 需要用户提供自己的 Tavily API Key，不附带默认 key。
+> ⚠️ Note: This skill requires users to provide their own Tavily API Key.
 
-### 基本搜索
-
-```bash
-./search.sh "搜索关键词"
-```
-
-### 指定结果数量
+### Basic Search
 
 ```bash
-./search.sh "关键词" 10
+./search.sh "search query"
 ```
 
-### 包含图片
+### Specify Result Count
 
 ```bash
-./search.sh "关键词" 5 true
+./search.sh "query" 10
 ```
 
-### 查看额度
+### Include Images
+
+```bash
+./search.sh "query" 5 true
+```
+
+### Check Usage
 
 ```bash
 ./search.sh --usage
 ```
 
-### 切换付费模式
+### Toggle Paid Mode
 
 ```bash
 ./search.sh --toggle-paid-mode
 ```
 
-### 查看状态
+### Check Status
 
 ```bash
 ./search.sh --status
 ```
 
-## 输出格式
+## Output Format
 
-搜索结果为 JSON 格式：
+Results in JSON format:
 
 ```json
 {
-  "query": "关键词",
+  "query": "keyword",
   "results": [
     {
-      "title": "结果标题",
-      "url": "链接",
-      "content": "摘要"
+      "title": "Result Title",
+      "url": "link",
+      "content": "summary"
     }
   ],
   "quota_info": {
@@ -87,12 +93,12 @@ export TAVILY_API_KEY="你的API Key"
 }
 ```
 
-## 依赖
+## Dependencies
 
-- `curl` - HTTP 请求
-- `jq` - JSON 处理
+- `curl` - HTTP requests
+- `jq` - JSON processing
 
-### 安装依赖
+### Install Dependencies
 
 **Ubuntu/Debian:**
 ```bash
@@ -104,7 +110,7 @@ sudo apt-get install curl jq
 brew install curl jq
 ```
 
-## 限制
+## Limits
 
-- 免费版每月 1000 次请求
-- 每次搜索最多返回 20 条结果
+- Free plan: 1000 requests/month
+- Max 20 results per search
