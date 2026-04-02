@@ -1,0 +1,6 @@
+{
+  "blocked": [
+    {"domain": "baidu.com", "reason": "百度搜索"},
+    {"domain": "csdn.net", "reason": "CSDN"}
+  ]
+}
