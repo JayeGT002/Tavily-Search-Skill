@@ -15,6 +15,7 @@
 - **免费/付费额度区分** - 分别显示免费额度和付费额度（PayGo）
 - **付费模式开关** - 可切换是否优先使用付费额度
 - **零额度禁用** - 付费额度为0时自动禁用（可配置）
+- **搜索结果黑名单** - 自动过滤百度、CSDN 等低质量源
 - **完整错误处理** - 网络失败、额度不足、API Key 无效等情况均有处理
 
 ---
@@ -32,7 +33,18 @@ export TAVILY_API_KEY="你的API Key"
 
 > ⚠️ 注意：此 skill 需要用户提供自己的 Tavily API Key，不附带默认 key。
 
-项目已发布至https://clawhub.ai/JayeGT002/tavily-search-skill
+### 目录结构
+
+```
+Tavily-Search-Skill/
+├── search.sh              ← 搜索入口脚本
+├── SKILL.md               ← Skill 配置（供 OpenClaw 读取）
+├── _meta.json             ← 元数据
+├── blocklist/
+│   ├── blocklist.json     ← 黑名单域名列表
+│   └── filter_blocklist.py ← 过滤脚本
+└── apikey                 ← API Key 文件（用户创建，不上传）
+```
 
 ### 基本搜索
 
@@ -70,6 +82,38 @@ export TAVILY_API_KEY="你的API Key"
 ```bash
 ./search.sh --status
 ```
+
+---
+
+## 🚫 黑名单过滤
+
+搜索结果会自动过滤低质量域名（如百度、CSDN 等），过滤结果会在输出中显示：
+
+```
+[BLOCKLIST] Filtered 2 results
+```
+
+### 查看当前黑名单
+
+```bash
+cat blocklist/blocklist.json
+```
+
+### 添加黑名单域名
+
+当用户说"拉黑 XX 域名"时，更新 `blocklist/blocklist.json`：
+
+```json
+{
+  "blocked": [
+    {"domain": "baidu.com", "reason": "百度搜索"},
+    {"domain": "csdn.net", "reason": "CSDN"},
+    {"domain": "juejin.cn", "reason": "掘金"}
+  ]
+}
+```
+
+> 填写根域名会自动匹配所有子域名。例如添加 `csdn.net` 也会屏蔽 `blog.csdn.net`、`download.csdn.net` 等。
 
 ---
 

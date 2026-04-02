@@ -3,18 +3,20 @@
 🚀 High-quality network search tool with real-time quota management and paid mode control.
 
 [ ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ](LICENSE)
+
 [English](./README-en.md) | [中文](./README.md)
 
 ---
 
 ## ✨ Features
 
-- **Smart Search** - Tavily API for high-quality structured results
+- **Smart Search** - Tavily API for high-quality structured search results
 - **Real-time Quota** - Auto-updates quota after every search (no 24h cache)
-- **Free/Paid Quota** - Distinguish between free plan and PayGo credits
+- **Free/Paid Quota** - Distinguishes free plan and PayGo credits separately
 - **Paid Mode Toggle** - Switch to prioritize paid credits
-- **Zero-quota Disable** - Auto-disable when paid quota exhausted
-- **Error Handling** - Network failures, quota issues, invalid API keys
+- **Zero-quota Disable** - Auto-disable when paid quota reaches zero
+- **Blocklist Filter** - Automatically filters low-quality sources (Baidu, CSDN, etc.)
+- **Error Handling** - Network failures, quota issues, invalid API keys all handled
 
 ---
 
@@ -23,6 +25,7 @@
 ### Prerequisites ⚠️
 
 **Required: Set environment variable (user must provide their own)**
+
 ```bash
 export TAVILY_API_KEY="your-api-key"
 ```
@@ -30,6 +33,19 @@ export TAVILY_API_KEY="your-api-key"
 Get API Key: https://app.tavily.com/api-keys
 
 > ⚠️ Note: This skill requires users to provide their own Tavily API Key. No default key included.
+
+### Directory Structure
+
+```
+Tavily-Search-Skill/
+├── search.sh              ← Search entry script
+├── SKILL.md               ← Skill config (for OpenClaw)
+├── _meta.json             ← Metadata
+├── blocklist/
+│   ├── blocklist.json     ← Blocked domain list
+│   └── filter_blocklist.py ← Filter script
+└── apikey                 ← API Key file (user creates, not committed)
+```
 
 ### Basic Search
 
@@ -67,6 +83,38 @@ Get API Key: https://app.tavily.com/api-keys
 ```bash
 ./search.sh --status
 ```
+
+---
+
+## 🚫 Blocklist Filtering
+
+Search results automatically filter low-quality domains (Baidu, CSDN, etc.), shown in output:
+
+```
+[BLOCKLIST] Filtered 2 results
+```
+
+### View Current Blocklist
+
+```bash
+cat blocklist/blocklist.json
+```
+
+### Add Blocked Domains
+
+When user says "block [domain]", update `blocklist/blocklist.json`:
+
+```json
+{
+  "blocked": [
+    {"domain": "baidu.com", "reason": "Baidu Search"},
+    {"domain": "csdn.net", "reason": "CSDN"},
+    {"domain": "juejin.cn", "reason": "Juejin"}
+  ]
+}
+```
+
+> Root domains automatically match all subdomains. e.g. adding `csdn.net` also blocks `blog.csdn.net`, `download.csdn.net`, etc.
 
 ---
 
