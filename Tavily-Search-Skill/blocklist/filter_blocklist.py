@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys, json
 from urllib.parse import urlparse
 
@@ -11,16 +10,17 @@ def get_domain(url):
     except:
         return ''
 
-if len(sys.argv) < 2:
-    print("Usage: filter_blocklist.py <blocklist.json>", file=sys.stderr)
+if len(sys.argv) < 3:
+    print("Usage: filter_blocklist.py <blocklist.json> <input.json>", file=sys.stderr)
     sys.exit(1)
 
 blocklist_file = sys.argv[1]
+input_file = sys.argv[2]
 
 try:
     with open(blocklist_file, 'r') as f:
         blocklist = json.load(f)
-    with open('/tmp/tavily_input.json', 'r') as f:
+    with open(input_file, 'r') as f:
         data = json.load(f)
     
     # Build blocked set from root domains only
@@ -41,5 +41,8 @@ try:
 
 except Exception as e:
     print(f'[BLOCKLIST] Error: {e}', file=sys.stderr)
-    with open('/tmp/tavily_input.json', 'r') as f:
-        print(f.read(), end='')
+    try:
+        with open(input_file, 'r') as f:
+            print(f.read(), end='')
+    except:
+        pass

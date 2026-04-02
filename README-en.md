@@ -1,38 +1,39 @@
 # Tavily Search Skill
 
-🚀 High-quality network search tool with real-time quota management and paid mode control.
+🚀 High-quality web search tool powered by Tavily API, with search result blocklist filtering.
 
 [ ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ](LICENSE)
-
-[English](./README-en.md) | [中文](./README.md)
 
 ---
 
 ## ✨ Features
 
-- **Smart Search** - Tavily API for high-quality structured search results
-- **Real-time Quota** - Auto-updates quota after every search (no 24h cache)
-- **Free/Paid Quota** - Distinguishes free plan and PayGo credits separately
-- **Paid Mode Toggle** - Switch to prioritize paid credits
-- **Zero-quota Disable** - Auto-disable when paid quota reaches zero
-- **Blocklist Filter** - Automatically filters low-quality sources (Baidu, CSDN, etc.)
-- **Error Handling** - Network failures, quota issues, invalid API keys all handled
+- **Smart Search** - Tavily API for structured search results
+- **Real-time Quota** - Queries account quota on every search
+- **Blocklist Filtering** - Automatically filters low quality content farm domains (Baidu, CSDN, Jianshu, etc.)
+- **Safe Query Passing** - Query passed via `jq -n` to prevent Shell Injection
+- **Lightweight & Stateless** - No config files, no caching, minimal dependencies
 
 ---
 
 ## 📖 Usage
 
-### Prerequisites ⚠️
+### Setup
 
-**Required: Set environment variable (user must provide their own)**
+**API Key (choose one):**
 
+1. Environment variable:
 ```bash
 export TAVILY_API_KEY="your-api-key"
 ```
 
-Get API Key: https://app.tavily.com/api-keys
+2. File (create `apikey` in project root):
+```bash
+echo "your-api-key" > apikey
+chmod 600 apikey
+```
 
-> ⚠️ Note: This skill requires users to provide their own Tavily API Key. No default key included.
+Get API Key: https://app.tavily.com/api-keys
 
 ### Directory Structure
 
@@ -41,10 +42,11 @@ Tavily-Search-Skill/
 ├── search.sh              ← Search entry script
 ├── SKILL.md               ← Skill config (for OpenClaw)
 ├── _meta.json             ← Metadata
+├── apikey                 ← API Key file (user creates, not committed)
 ├── blocklist/
 │   ├── blocklist.json     ← Blocked domain list
 │   └── filter_blocklist.py ← Filter script
-└── apikey                 ← API Key file (user creates, not committed)
+└── LICENSE
 ```
 
 ### Basic Search
@@ -66,35 +68,19 @@ Tavily-Search-Skill/
 ./search.sh "query" 5 true
 ```
 
-### Check Usage
-
-```bash
-./search.sh --usage
-```
-
-### Toggle Paid Mode
-
-```bash
-./search.sh --toggle-paid-mode
-```
-
-### Check Status
-
-```bash
-./search.sh --status
-```
-
 ---
 
 ## 🚫 Blocklist Filtering
 
-Search results automatically filter low-quality domains (Baidu, CSDN, etc.), shown in output:
+Search results automatically filter low quality domains. Filter messages go to stderr (not in JSON output):
 
 ```
-[BLOCKLIST] Filtered 2 results
+[BLOCKLIST] Filtered 3 results
 ```
 
-### View Current Blocklist
+Currently blocked domains: `baidu.com` `csdn.net` `jianshu.com` `toutiao.com` `mp.sohu.com`
+
+### View Blocklist
 
 ```bash
 cat blocklist/blocklist.json
@@ -102,84 +88,32 @@ cat blocklist/blocklist.json
 
 ### Add Blocked Domains
 
-When user says "block [domain]", update `blocklist/blocklist.json`:
+Update `blocklist/blocklist.json`. Root domains match all subdomains automatically:
 
 ```json
 {
   "blocked": [
     {"domain": "baidu.com", "reason": "Baidu Search"},
-    {"domain": "csdn.net", "reason": "CSDN"},
-    {"domain": "juejin.cn", "reason": "Juejin"}
+    {"domain": "csdn.net", "reason": "CSDN"}
   ]
 }
 ```
 
-> Root domains automatically match all subdomains. e.g. adding `csdn.net` also blocks `blog.csdn.net`, `download.csdn.net`, etc.
-
----
-
-## 💳 Quota Logic
-
-### Free vs Paid Quota
-
-| Type | Source | Description |
-|------|--------|-------------|
-| **Free** | Plan quota | 1000 credits/month |
-| **Paid** | PayGo | Additional purchased credits |
-
-### Real-time Update
-
-- **Auto-update after each search** - No 24h cache, queries API in real-time
-- State file: `/tmp/tavily_state/usage_state.json`
-
-### Configuration
-
-Config file: `/tmp/tavily_state/config.json`
-
-```json
-{
-  "paid_mode_enabled": false,
-  "api_initialized_date": "2026-03-08",
-  "free_quota_limit": 1000,
-  "disable_when_paid_quota_zero": true
-}
-```
-
-| Config | Type | Description |
-|--------|------|-------------|
-| `paid_mode_enabled` | Boolean | Paid mode switch, true = prioritize paid credits |
-| `api_initialized_date` | String | API init date |
-| `free_quota_limit` | Number | Free quota limit, default 1000 |
-| `disable_when_paid_quota_zero` | Boolean | Disable search when paid quota = 0 |
+Adding `csdn.net` also blocks `blog.csdn.net`, `download.csdn.net`, etc.
 
 ---
 
 ## ⚠️ Error Handling
 
-| Error Type | Solution |
-|------------|----------|
-| **Network failure** | Auto-retry up to 2 times, 1s delay |
-| **Quota exhausted** | Return error, stop if zero-quota disable is on |
-| **Invalid API Key (401/403)** | Return error and exit |
-| **Rate limit (429)** | Auto-retry, 2s delay |
-| **JSON parse failure** | Handled by retry mechanism |
+| Error | Behavior |
+|-------|----------|
+| **No API Key** | Prints error message and exits |
+| **HTTP 4xx/5xx** | Prints JSON error and exits |
 
-### Error Response Examples
+### Error Response Example
 
 ```json
-{
-  "error": "Quota exhausted",
-  "remaining": 0,
-  "status": "disabled"
-}
-```
-
-```json
-{
-  "error": "API Key invalid",
-  "http_code": 401,
-  "status": "failed"
-}
+{"error": "HTTP 401", "body": "..."}
 ```
 
 ---
@@ -199,18 +133,16 @@ Config file: `/tmp/tavily_state/config.json`
     }
   ],
   "quota_info": {
-    "plan": "free",
+    "plan": "Researcher",
     "total": 1000,
     "used": 15,
-    "remaining": 985,
-    "paygo_used": 0,
-    "paygo_limit": 0
+    "remaining": 985
   },
   "response_time": "0.5s"
 }
 ```
 
-### Field Description
+### Field Reference
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -219,28 +151,34 @@ Config file: `/tmp/tavily_state/config.json`
 | `results[].title` | String | Result title |
 | `results[].url` | String | Result URL |
 | `results[].content` | String | Result snippet |
-| `quota_info` | Object | Quota info |
-| `response_time` | String | Response time |
+| `quota_info.plan` | String | Current plan |
+| `quota_info.total` | Number | Total quota |
+| `quota_info.used` | Number | Used quota |
+| `quota_info.remaining` | Number | Remaining quota |
+| `response_time` | String | Response time in seconds |
 
 ---
 
 ## 🔧 Dependencies
 
-| Dependency | Install (Ubuntu/Debian) | Install (macOS) |
-|------------|-------------------------|-----------------|
-| curl | `sudo apt-get install curl` | `brew install curl` |
-| jq | `sudo apt-get install jq` | `brew install jq` |
+- `curl`
+- `jq`
+
+Install:
+
+```bash
+# Ubuntu / Debian
+sudo apt-get install curl jq
+
+# macOS
+brew install curl jq
+
+# Alpine
+apk add curl jq
+```
 
 ---
 
 ## 📄 License
 
-This project is licensed under **MIT License** - See [LICENSE](./LICENSE).
-
----
-
-## 🙏 Credits
-
-- **[Tavily](https://tavily.com/)** - Search API
-- **[OpenClaw](https://github.com/openclaw/openclaw)** - Agent Framework
-- **[Siliconflow](https://siliconflow.cn)** - API Provider
+MIT License - See [LICENSE](./LICENSE).
