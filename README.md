@@ -1,12 +1,12 @@
 # Tavily Search Skill
 
-高性能网络搜索工具，基于 Tavily API，支持搜索结果黑名单过滤。
+🚀 高性能网络搜索工具，基于 Tavily API，支持搜索结果黑名单过滤。
 
 [ ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ](LICENSE)
 
 ---
 
-## 功能特性
+## ✨ 功能特性
 
 - **智能搜索** - 调用 Tavily API 返回结构化搜索结果
 - **实时额度** - 每次搜索后自动查询账户额度信息
@@ -16,7 +16,7 @@
 
 ---
 
-## 使用方法
+## 📖 使用方法
 
 ### 前置配置
 
@@ -70,9 +70,13 @@ Tavily-Search-Skill/
 
 ---
 
-## 黑名单过滤
+## 🚫 黑名单过滤
 
-搜索结果自动过滤低质量域名。过滤信息写入 stderr，不出现在 JSON 输出中。
+搜索结果自动过滤低质量域名。过滤信息写入 stderr，不出现在 JSON 输出中：
+
+```
+[BLOCKLIST] Filtered 3 results
+```
 
 当前屏蔽域名：baidu.com csdn.net jianshu.com toutiao.com mp.sohu.com
 
@@ -84,11 +88,20 @@ cat blocklist/blocklist.json
 
 ### 添加黑名单域名
 
-更新 blocklist/blocklist.json，填写根域名即自动匹配所有子域名。
+更新 blocklist/blocklist.json，填写根域名即自动匹配所有子域名：
+
+```json
+{
+  "blocked": [
+    {"domain": "baidu.com", "reason": "百度搜索"},
+    {"domain": "csdn.net", "reason": "CSDN"}
+  ]
+}
+```
 
 ---
 
-## 错误处理
+## ⚠️ 错误处理
 
 | 错误类型 | 处理方式 |
 |----------|----------|
@@ -97,7 +110,7 @@ cat blocklist/blocklist.json
 
 ---
 
-## 输出格式
+## 📦 输出格式
 
 ### 成功响应
 
@@ -138,7 +151,7 @@ cat blocklist/blocklist.json
 
 ---
 
-## 依赖
+## 🔧 依赖
 
 - curl
 - jq
@@ -158,6 +171,6 @@ apk add curl jq
 
 ---
 
-## 许可
+## 📄 许可
 
 MIT License - 详见 LICENSE。
