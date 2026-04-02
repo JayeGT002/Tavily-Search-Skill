@@ -1,111 +1,31 @@
 ---
-name: tavily-search-skill
-description: Web search via Tavily API (alternative to Brave). Use when the user asks to search the web / look up sources / find links and Brave web_search is unavailable or undesired. 
-metadata:
-  openclaw:
-    homepage: https://github.com/JayeGT002/Tavily-Search-Skill
+name: tavily
+description: 调用 Tavily API 进行高质量搜索，支持实时额度管理和付费模式控制。用于需要网络搜索时。
 ---
 
 # Tavily Search Skill
 
-OpenClaw Skill for performing high quality web searches using the Tavily API.
+快速调用 Tavily API 进行搜索。
 
-## Directory Structure
-
-```
-tavily-search-skill/
-├── SKILL.md                    ← must stay at root
-├── search.sh                   ← must stay at root (entry script)
-├── apikey                      ← API Key file (user creates this)
-├── _meta.json
-└── blocklist/
-    ├── blocklist.json         ← blacklist config
-    └── filter_blocklist.py     ← filter script
-```
-
-## Agent Workflow
-
-When instructed to install this skill, follow these steps in order:
-
-### Step 1: Install the skill
+## 使用方法
 
 ```bash
-git clone https://github.com/JayeGT002/Tavily-Search-Skill.git tavily-search-skill
-cd tavily-search-skill
+# 基础搜索
+./skills/tavily/search.sh "你的搜索关键词"
+
+# 指定结果数量（默认5条）
+./skills/tavily/search.sh "关键词" 10
+
+# 包含图片
+./skills/tavily/search.sh "关键词" 5 true
 ```
 
-### Step 2: Request API Key from user
+## 配置
 
-Ask the user: "请提供你的 Tavily API Key，用于配置搜索功能。获取地址：https://app.tavily.com/api-keys"
+本地开发版，apikey明文配置，如果出现错误请提示用户更换apikey
+TAVILY_API_KEY="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"
 
-**Wait for the user's API Key reply before proceeding.**
+## 限制
 
-### Step 3: Create apikey file
-
-```bash
-echo "USER_PROVIDED_API_KEY" > apikey
-chmod 600 apikey
-```
-
-### Step 4: Verify installation
-
-```bash
-./search.sh "test"
-```
-
-A successful response contains search results and quota info.
-
----
-
-## Blacklist Management
-
-The blacklist filters out low quality or untrusted sources from search results.
-
-### View current blacklist
-
-```bash
-cat blocklist/blocklist.json
-```
-
-### Add a domain to blacklist
-
-When the user says "block [domain]", update `blocklist/blocklist.json`:
-
-Root domains automatically match all subdomains. Example: adding `csdn.net` also blocks `blog.csdn.net`, `download.csdn.net`, etc.
-
-### Filter feedback
-
-When results are filtered, the output includes:
-
-```
-[BLOCKLIST] Filtered 3 results
-```
-
----
-
-## Usage
-
-### Basic Search
-
-```bash
-./search.sh "search query"
-```
-
-### Specify Result Count
-
-```bash
-./search.sh "query" 10
-```
-
-### Include Images
-
-```bash
-./search.sh "query" 5 true
-```
-
-## Dependencies
-
-- `curl`
-- `jq`
-
-Install if missing: `sudo apt-get install curl jq` (Ubuntu) / `brew install curl jq` (macOS)
+- 每月 1000 次请求
+- 每次搜索最多返回 20 条结果
