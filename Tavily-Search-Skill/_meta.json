@@ -1,8 +1,1 @@
-{
-  "ownerId": "kn78ns1svg36jybcqfkxhtvcp182kf18",
-  "slug": "tavily-search-skill",
-  "version": "1.0.4",
-  "publishedAt": 1773085282117,
-  "required_envs": ["TAVILY_API_KEY"],
-  "required_binaries": ["curl", "jq"]
-}
+{"ownerId": "kn78ns1svg36jybcqfkxhtvcp182kf18", "slug": "tavily-search-skill", "version": "1.0.5", "publishedAt": 1773128020068}
