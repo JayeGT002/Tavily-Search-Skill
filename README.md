@@ -174,3 +174,7 @@ apk add curl jq
 ## 📄 许可
 
 MIT License - 详见 LICENSE。
+
+## Download History
+
+[![Download History](https://skill-history.com/chart/jayegt002/tavily-search-skill.svg)](https://skill-history.com/jayegt002/tavily-search-skill)
